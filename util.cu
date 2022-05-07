@@ -1,4 +1,6 @@
-#include "symcuda.cuh"
+#include "util.cuh"
+
+#include <stdio.h>
 
 __host__ __device__
 int cuStrcmp(const char * p1, const char * p2)
@@ -18,4 +20,10 @@ int cuStrcmp(const char * p1, const char * p2)
 	} while (c1 == c2);
 
   return c1 - c2;
+}
+
+__host__ __device__
+void print(cuFloatComplex c)
+{
+  printf("%f + I * %f", cuCrealf(c), cuCimagf(c));
 }

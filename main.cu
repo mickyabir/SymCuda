@@ -4,40 +4,10 @@
 #include <complex.h>
 #include <math.h>
 
-#include <cuda.h>
-#include <curand.h>
-#include <curand_kernel.h>
-
 #include "symcuda.cuh"
-
-__device__
-float cost(float *thetas)
-{
-  return 0.0;
-}
-
-__global__
-void kernel(Matrix *m)
-{
-	printf("%d\n", m->rows_);
-}
 
 int main(int argc, char const *argv[])
 {
-//  Matrix * m;
-//  cudaMallocManaged(&m, sizeof(Matrix));
-//
-//	m->rows_ = 2;
-//
-//  kernel<<<1, 1>>>(m);
-//
-//	auto e = cudaGetLastError();
-//	printf("%s\n", cudaGetErrorString(e));
-//
-//  cudaDeviceSynchronize();
-//
-//  cudaFree(m);
-
   Symbol x("x");
   Symbol y("y");
   SymAdd addNode(&x, &y);
@@ -50,11 +20,20 @@ int main(int argc, char const *argv[])
  	addNode.print();
  	std::cout << std::endl;
 
-	SymFloat a(5.5);
-	SymFloat b(1.5);
+	SymComplex a(make_cuComplex(6.5, 0));
+	SymComplex b(make_cuComplex(0.5, 0));
 	SymAdd addFloats(&a, &b);
 	addFloats.print();
-	std::cout << std::endl << addFloats.eval() << std::endl;
+	std::cout << std::endl;
+	print(addFloats.eval());
+	std::cout << std::endl;
+
+	SymMul mulFloats(&a, &b);
+	mulFloats.print();
+	std::cout << std::endl;
+	print(mulFloats.eval());
+	std::cout << std::endl;
+
 
   return 0;
 }

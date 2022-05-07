@@ -1,10 +1,6 @@
-#include "symcuda.cuh"
+#include "literals.cuh"
 
-// __host__ __device__
-// void Symbol::print()
-// {
-// 	printf("%s", this->name_);
-// }
+#include "util.cuh"
 
 __host__ __device__
 void Symbol::subst(const char ** names, const char ** new_names)
