@@ -24,8 +24,6 @@ public:
 	__host__ __device__ virtual cuFloatComplex eval() override {
 		return make_cuFloatComplex(0, 1);
 	}
-
-	__host__ __device__ virtual void subst(const char ** names, const char ** new_names) override;
 };
 
 class SymComplex: public SymNode {
@@ -35,11 +33,14 @@ public:
 		data_ = data;
 	}
 
+	__host__ __device__ SymComplex(float re, float im) {
+		name_ = "complex";
+		data_ = make_cuComplex(re, im);
+	}
+
 	__host__ __device__ virtual cuFloatComplex eval() override {
 		return data_;
 	}
-
-	__host__ __device__ virtual void subst(const char ** names, const char ** new_names) override {}
 
 	__host__ __device__ virtual void print() {
 		printf("(%f + I * %f)", cuCrealf(data_), cuCimagf(data_));

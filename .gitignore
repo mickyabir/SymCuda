@@ -6,4 +6,5 @@
 *.ptx
 *.cubin
 *.fatbin
+*.swp
 build/
