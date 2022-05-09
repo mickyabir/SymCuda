@@ -91,3 +91,19 @@ void Matrix::subst(const char ** names, const char ** new_names)
     }
   }
 }
+
+__host__ __device__
+cuFloatComplex * Matrix::eval()
+{
+  if (NULL == elements) {
+    return NULL;
+  }
+
+  cuFloatComplex * concrete = new cuFloatComplex[rows_ * cols_];
+
+  for (int i = 0; i < rows_ * cols_; i++) {
+    concrete[i] = elements[i]->eval();
+  }
+
+  return concrete;
+}

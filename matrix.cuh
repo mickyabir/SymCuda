@@ -13,6 +13,7 @@ public:
   __host__ __device__ Matrix operator*(Matrix & other);
   __host__ __device__ SymNode * operator[](int i);
   __host__ __device__ void subst(const char ** names, const char ** new_names);
+  __host__ __device__ cuFloatComplex * eval();
 
 protected:
   int rows_, cols_;

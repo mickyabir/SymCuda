@@ -15,6 +15,8 @@ public:
   }
 
 	__host__ __device__ virtual void print() override {
+    printf("(");
+
 		if (NULL != arg1_) {
 			arg1_->print();
 		}
@@ -24,6 +26,8 @@ public:
 		if (NULL != arg2_) {
 			arg2_->print();
 		}
+
+    printf(")");
 	}
 
 protected:
