@@ -43,6 +43,10 @@ public:
 
     return cuComplexCos(arg_->eval());
 	}
+
+  __host__ __device__ virtual SymCos * clone() override {
+    return new SymCos(this->arg_);
+  }
 };
 
 class SymSin final: public SymOp {
@@ -59,6 +63,10 @@ public:
 
     return cuComplexSin(arg_->eval());
 	}
+
+  __host__ __device__ virtual SymSin * clone() override {
+    return new SymSin(this->arg_);
+  }
 };
 
 class SymExp final: public SymOp {
@@ -75,5 +83,9 @@ public:
 
     return cuComplexExp(arg_->eval());
 	}
+
+  __host__ __device__ virtual SymExp * clone() override {
+    return new SymExp(this->arg_);
+  }
 };
 

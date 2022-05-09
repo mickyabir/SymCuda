@@ -13,6 +13,10 @@ public:
 	}
 
 	__host__ __device__ virtual void subst(const char ** names, const char ** new_names) override;
+
+  __host__ __device__ virtual Symbol * clone() override {
+    return new Symbol(name_);
+  }
 };
 
 class SymImag: public SymNode {
@@ -24,6 +28,10 @@ public:
 	__host__ __device__ virtual cuFloatComplex eval() override {
 		return make_cuFloatComplex(0, 1);
 	}
+
+  __host__ __device__ virtual SymImag * clone() override {
+    return new SymImag();
+  }
 };
 
 class SymComplex: public SymNode {
@@ -45,6 +53,10 @@ public:
 	__host__ __device__ virtual void print() {
 		printf("(%f + I * %f)", cuCrealf(data_), cuCimagf(data_));
 	}
+
+  __host__ __device__ virtual SymComplex * clone() override {
+    return new SymComplex(this->data_);
+  }
 
 protected:
 	cuFloatComplex data_;

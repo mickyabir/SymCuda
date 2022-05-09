@@ -110,6 +110,31 @@ Matrix Matrix::operator*(Matrix & other)
 }
 
 __host__ __device__
+Matrix Matrix::tensor(Matrix & other)
+{
+  int new_rows = rows_ * other.rows_;
+  int new_cols = cols_ * other.cols_;
+
+  SymNode ** new_elements = new SymNode*[new_rows * new_cols];
+
+  for (int i = 0; i < rows_; i++) {
+    for (int k = 0; k < other.rows_; k++) {
+      for (int j = 0; j < cols_; j++) {
+        for (int l = 0; l < other.cols_; l++) {
+          int idx = i * cols_ * other.rows_ * other.cols_ + k * cols_ * other.cols_ + j * other.cols_ + l;
+          SymNode * elem1 = this->elements[i * cols_ + j]->clone();
+          SymNode * elem2 = other.elements[k * other.cols_ + l]->clone();
+          new_elements[idx] = new SymMul(elem1, elem2);
+        }
+      }
+    }
+  }
+
+  Matrix m(new_rows, new_cols, new_elements);
+  return m;
+}
+
+__host__ __device__
 void Matrix::subst(const char ** names, const char ** new_names)
 {
   if (NULL == elements) {

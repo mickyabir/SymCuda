@@ -6,6 +6,17 @@
 
 #include "symcuda.cuh"
 
+Matrix generateSymbolicSquareMatrix(int n, const char ** symbol_names)
+{
+  SymNode ** elements = new SymNode*[n * n];
+
+  for (int i = 0; i < n * n; i++) {
+    elements[i] = new Symbol(symbol_names[i]);
+  }
+
+  return Matrix(n, n, elements);
+}
+
 Matrix generateIdentityMatrix(int n)
 {
   float elements[n * n];
@@ -190,36 +201,22 @@ Matrix generateU3(const char * theta_name, const char * phi_name, const char * l
 
 int main(int argc, char const *argv[])
 {
-  SymNode ** elemA = new SymNode*[1];
-  SymNode ** elemB = new SymNode*[1];
-  elemA[0] = new SymAdd(new SymComplex(2.0, 0.0), new SymComplex(1.0, 0.0));
-  elemB[0] = new SymComplex(3.0, 0.0);
-
-  Matrix a(1, 1, elemA);
-  Matrix b(1, 1, elemB);
-
-  Matrix m = a * b;
-
-  m[0]->print();
-  std::cout << std::endl;
-
-  cuComplex * concrete = m.eval();
-
-  print(concrete[0]);
-  std::cout << std::endl;
-  delete[] concrete;
-
   int n = 2;
-  Matrix u3 = generateU3("theta", "phi", "lambda");
+  const char * symbol_names1[4] = {"a11", "a12", "a21", "a22"};
+  Matrix s1 = generateSymbolicSquareMatrix(2, symbol_names1);
 
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
-      u3[i * n + j]->print();
+  const char * symbol_names2[4] = {"b11", "b12", "b21", "b22"};
+  Matrix s2 = generateSymbolicSquareMatrix(2, symbol_names2);
+
+  Matrix s3 = s1.tensor(s2);
+
+  for (int i = 0; i < n * n; i++) {
+    for (int j = 0; j < n * n; j++) {
+      s3[i * n * n + j]->print();
       printf(" | ");
     }
     printf("-------------------------------------------------------------\n");
   }
-
 
   return 0;
 }
