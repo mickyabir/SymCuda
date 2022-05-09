@@ -1,5 +1,6 @@
 #include <assert.h>
 
+#include "literals.cuh"
 #include "matrix.cuh"
 #include "symbinop.cuh"
 
@@ -25,6 +26,36 @@ Matrix::Matrix(int rows, int cols, SymNode ** elems)
   this->elements = elems;
   this->rows_ = rows;
   this->cols_ = cols;
+}
+
+__host__ __device__
+Matrix::Matrix(int rows, int cols, const float values[])
+{
+  this->rows_ = rows;
+  this->cols_ = cols;
+
+  SymNode ** elems = new SymNode*[rows * cols];
+
+  for (int i = 0; i < rows * cols; i++) {
+    elems[i] = new SymComplex(values[i], 0);
+  }
+
+  this->elements = elems;
+}
+
+__host__ __device__
+Matrix::Matrix(int rows, int cols, const cuFloatComplex values[])
+{
+  this->rows_ = rows;
+  this->cols_ = cols;
+
+  SymNode ** elems = new SymNode*[rows * cols];
+
+  for (int i = 0; i < rows * cols; i++) {
+    elems[i] = new SymComplex(values[i]);
+  }
+
+  this->elements = elems;
 }
 
 __host__ __device__

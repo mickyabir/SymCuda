@@ -54,7 +54,7 @@ public:
 class SymSub final: public SymBinOp {
 public:
   __host__ __device__ SymSub(SymNode * arg1, SymNode * arg2) {
-		name_ = "+";
+		name_ = "-";
 		arg1_ = arg1;
 		arg2_ = arg2;
 	}
@@ -88,7 +88,7 @@ public:
 class SymDiv final: public SymBinOp {
 public:
   __host__ __device__ SymDiv(SymNode * arg1, SymNode * arg2) {
-		name_ = "*";
+		name_ = "/";
 		arg1_ = arg1;
 		arg2_ = arg2;
 	}

@@ -48,7 +48,7 @@ public:
 class SymSin final: public SymOp {
 public:
   __host__ __device__ SymSin(SymNode * arg) {
-		name_ = "cos";
+		name_ = "sin";
 		arg_ = arg;
 	}
 
@@ -64,7 +64,7 @@ public:
 class SymExp final: public SymOp {
 public:
   __host__ __device__ SymExp(SymNode * arg) {
-		name_ = "cos";
+		name_ = "exp";
 		arg_ = arg;
 	}
 

@@ -7,6 +7,8 @@ public:
 	__host__ __device__ Matrix();
   __host__ __device__ Matrix(int rows, int cols);
   __host__ __device__ Matrix(int rows, int cols, SymNode ** elements);
+  __host__ __device__ Matrix(int rows, int cols, const float values[]);
+  __host__ __device__ Matrix(int rows, int cols, const cuFloatComplex values[]);
 
   __host__ __device__ ~Matrix();
 
