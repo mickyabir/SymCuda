@@ -21,7 +21,14 @@ public:
     printf(")");
 	}
 
+
+  __host__ __device__ virtual void free() override {
+    arg_->free();
+    delete arg_;
+  }
+
   __host__ __device__ virtual ~SymOp() {
+    arg_->free();
     delete arg_;
   }
   

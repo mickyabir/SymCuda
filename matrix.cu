@@ -65,6 +65,7 @@ Matrix::~Matrix()
     for (int i = 0; i < rows_; i++) {
       for (int j = 0; j < cols_; j++) {
         if (NULL != this->elements[i * cols_ + j]) {
+          this->elements[i * cols_ + j]->free();
           delete this->elements[i * cols_ + j];
         }
       }

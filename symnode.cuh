@@ -15,6 +15,8 @@ public:
 		printf("%s", name_);
 	}
 
+  __host__ __device__ virtual void free() = 0;
+
 protected:
 	const char * name_;
 };

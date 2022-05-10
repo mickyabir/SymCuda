@@ -6,6 +6,7 @@
 
 #include "symcuda.cuh"
 
+__host__
 Matrix generateSymbolicSquareMatrix(int n, const char ** symbol_names)
 {
   SymNode ** elements = new SymNode*[n * n];
@@ -17,9 +18,10 @@ Matrix generateSymbolicSquareMatrix(int n, const char ** symbol_names)
   return Matrix(n, n, elements);
 }
 
+__host__
 Matrix generateIdentityMatrix(int n)
 {
-  float elements[n * n];
+  float * elements = new float[n * n];
 
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
@@ -30,14 +32,18 @@ Matrix generateIdentityMatrix(int n)
       }
     }
   }
+
+  Matrix m = Matrix(n, n, elements);
+  delete[] elements;
   
-  return Matrix(n, n, elements);
+  return m;
 }
 
+__host__
 Matrix generateTof3()
 {
   int n = 8;
-  float elements[n * n];
+  float * elements = new float[n * n];
 
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
@@ -54,9 +60,13 @@ Matrix generateTof3()
   elements[(n - 1) * n - 1] = 1;
   elements[(n - 1) * n - 2] = 0;
   
-  return Matrix(n, n, elements);
+  Matrix m = Matrix(n, n, elements);
+  delete[] elements;
+
+  return m;
 }
 
+__host__
 Matrix generateRx(const char * theta_name)
 {
   SymNode ** elements = new SymNode*[4];
@@ -92,6 +102,7 @@ Matrix generateRx(const char * theta_name)
   return Matrix(2, 2, elements);
 }
 
+__host__
 Matrix generateRy(const char * theta_name)
 {
   SymNode ** elements = new SymNode*[4];
@@ -127,6 +138,7 @@ Matrix generateRy(const char * theta_name)
   return Matrix(2, 2, elements);
 }
 
+__host__
 Matrix generateRz(const char * theta_name)
 {
   SymNode ** elements = new SymNode*[4];
@@ -153,6 +165,7 @@ Matrix generateRz(const char * theta_name)
   return Matrix(2, 2, elements);
 }
 
+__host__
 Matrix generateU3(const char * theta_name, const char * phi_name, const char * lambda_name)
 {
   SymNode ** elements = new SymNode*[4];
@@ -199,24 +212,52 @@ Matrix generateU3(const char * theta_name, const char * phi_name, const char * l
   return Matrix(2, 2, elements);
 }
 
+__host__
+Matrix generateInitialRotations(int n)
+{
+  Matrix m;
+
+  for (int i = 0; i < n; i++) {
+    int str_size = 20;
+    char * theta = new char[str_size];
+    char * phi = new char[str_size];
+    char * lambda = new char[str_size];
+    snprintf(theta, str_size, "initial_%d", i * 3);
+    snprintf(phi, str_size, "initial_%d", i * 3 + 1);
+    snprintf(lambda, str_size, "initial_%d", i * 3 + 2);
+    
+    Matrix u3 = generateU3(theta, phi, lambda);
+
+    delete[] theta;
+    delete[] phi;
+    delete[] lambda;
+
+    if (i == 0) {
+      m = u3;
+    } else {
+      Matrix new_m = m.tensor(u3);
+      m = new_m;
+    }
+  }
+  
+  return m;
+}
+
 int main(int argc, char const *argv[])
 {
-  int n = 2;
-  const char * symbol_names1[4] = {"a11", "a12", "a21", "a22"};
-  Matrix s1 = generateSymbolicSquareMatrix(2, symbol_names1);
+  // const char * names[4] = {"a", "b", "c", "d"};
+  // Matrix m = generateSymbolicSquareMatrix(2, names);
+  Matrix initial = generateInitialRotations(1);
 
-  const char * symbol_names2[4] = {"b11", "b12", "b21", "b22"};
-  Matrix s2 = generateSymbolicSquareMatrix(2, symbol_names2);
-
-  Matrix s3 = s1.tensor(s2);
-
-  for (int i = 0; i < n * n; i++) {
-    for (int j = 0; j < n * n; j++) {
-      s3[i * n * n + j]->print();
+  for (int i = 0; i < initial.getRows(); i++) {
+    for (int j = 0; j < initial.getCols(); j++) {
+      initial[i * initial.getRows() + j]->print();
       printf(" | ");
     }
     printf("-------------------------------------------------------------\n");
   }
+
+  cudaDeviceReset();
 
   return 0;
 }

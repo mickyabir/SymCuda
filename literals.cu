@@ -12,8 +12,13 @@ void Symbol::subst(const char ** names, const char ** new_names)
   int i = 0;
 
   while (NULL != names[i] && NULL != new_names[i]) {
-		if (0 == cuStrcmp(this->name_, names[i])) {
-			this->name_ = new_names[i];
+		if (0 == cuStrcmp(this->symbol_, names[i])) {
+      delete[] this->symbol_;
+
+      size_t length = cuStrlen(new_names[i]);
+      this->symbol_ = new char[length + 1];
+      cuStrcpy(symbol_, new_names[i]);
+
 			return;
 		}
 

@@ -5,6 +5,15 @@
 class SymBinOp: public SymNode {
 public:
   __host__ __device__ virtual ~SymBinOp() {
+    arg1_->free();
+    arg2_->free();
+    delete arg1_;
+    delete arg2_;
+  }
+
+  __host__ __device__ virtual void free() override {
+    arg1_->free();
+    arg2_->free();
     delete arg1_;
     delete arg2_;
   }
