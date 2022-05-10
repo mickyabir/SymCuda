@@ -60,7 +60,7 @@ public:
 	}
 
   __host__ __device__ virtual SymAdd * clone() override {
-    return new SymAdd(this->arg1_, this->arg2_);
+    return new SymAdd(this->arg1_->clone(), this->arg2_->clone());
   }
 };
 
@@ -81,7 +81,7 @@ public:
 	}
 
   __host__ __device__ virtual SymSub * clone() override {
-    return new SymSub(this->arg1_, this->arg2_);
+    return new SymSub(this->arg1_->clone(), this->arg2_->clone());
   }
 };
 
@@ -102,7 +102,7 @@ public:
 	}
 
   __host__ __device__ virtual SymMul * clone() override {
-    return new SymMul(this->arg1_, this->arg2_);
+    return new SymMul(this->arg1_->clone(), this->arg2_->clone());
   }
 };
 
@@ -123,6 +123,6 @@ public:
 	}
 
   __host__ __device__ virtual SymDiv * clone() override {
-    return new SymDiv(this->arg1_, this->arg2_);
+    return new SymDiv(this->arg1_->clone(), this->arg2_->clone());
   }
 };

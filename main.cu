@@ -245,9 +245,7 @@ Matrix generateInitialRotations(int n)
 
 int main(int argc, char const *argv[])
 {
-  // const char * names[4] = {"a", "b", "c", "d"};
-  // Matrix m = generateSymbolicSquareMatrix(2, names);
-  Matrix initial = generateInitialRotations(1);
+  Matrix initial = generateInitialRotations(2);
 
   for (int i = 0; i < initial.getRows(); i++) {
     for (int j = 0; j < initial.getCols(); j++) {

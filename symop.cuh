@@ -52,7 +52,7 @@ public:
 	}
 
   __host__ __device__ virtual SymCos * clone() override {
-    return new SymCos(this->arg_);
+    return new SymCos(this->arg_->clone());
   }
 };
 
@@ -72,7 +72,7 @@ public:
 	}
 
   __host__ __device__ virtual SymSin * clone() override {
-    return new SymSin(this->arg_);
+    return new SymSin(this->arg_->clone());
   }
 };
 
@@ -92,7 +92,7 @@ public:
 	}
 
   __host__ __device__ virtual SymExp * clone() override {
-    return new SymExp(this->arg_);
+    return new SymExp(this->arg_->clone());
   }
 };
 
